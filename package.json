@@ -1,7 +1,7 @@
 {
-  "name": "meanCRUD",
+  "name": "toDoList",
   "version": "1.0.0",
-  "description": "A demo implementation of the MEAN stack.",
+  "description": "A simple MEAN based to do list",
   "main": "app.js",
   "dependencies": {
     "body-parser": "^1.14.2",
