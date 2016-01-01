@@ -4,7 +4,9 @@
   "description": "A demo implementation of the MEAN stack.",
   "main": "app.js",
   "dependencies": {
-    "express": "^4.13.3"
+    "body-parser": "^1.14.2",
+    "express": "^4.13.3",
+    "mongodb": "^2.1.2"
   },
   "devDependencies": {},
   "scripts": {

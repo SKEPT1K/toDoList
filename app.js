@@ -1,16 +1,17 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 
-// Create the express App
+// The express app
 var app = express();
 
-// Create a MongoDB connection to localhost
-var MongoClient = require('mongodb').MongoClient;
+// Create a mongodb connection
+// and only start express listening once the connection is okay
+var mongodb = require('mongodb');
 var db, itemsCollection;
-
-MongoClient.connect('mongodb://127.0.0.1:27017/test', function(err, database){
+mongodb.MongoClient.connect('mongodb://127.0.0.1:27017/test', function (err, database) {
     if (err) throw err;
 
+    // Connected!
     db = database;
     itemsCollection = db.collection('items');
 
@@ -18,34 +19,39 @@ MongoClient.connect('mongodb://127.0.0.1:27017/test', function(err, database){
     console.log('Listening on port 3000');
 });
 
-// Create router to accept JSON
+// Create a router that can accept JSON
 var router = express.Router();
-router.use(bodyParser.hson());
+router.use(bodyParser.json());
 
-// Setup collection routes
-router.route('/').get(function(req, res, next){
-    itemsCollection.find().toArray(function(err, docs){
-        res.send({
-            status: 'Items found', items: docs
-        });
-    });
-}).post(function(req, res, next){
-    var item = req.body;
-    itemsCollection.insert(item, function(err, docs){
-        res.send({
-            status: 'Item added',
-            itemId: item._id
-        });
-    });
-})
+// Setup the collection routes
+router.route('/')
+      .get(function (req, res, next) {
+          itemsCollection.find().toArray(function (err, docs) {
+              res.send({
+                  status: 'Items found',
+                  items: docs
+              });
+          });
+      })
+      .post(function (req, res, next) {
+          var item = req.body;
+          itemsCollection.insert(item, function (err, docs) {
+              res.send({
+                  status: 'Item added',
+                  itemId: item._id
+              });
+          });
+      })
 
-// Setup item routes
-router.route('/:id').delete(function(req, res, next){
-    var id = req.params['id'];
-    var lookup = {_id: new mongodb.ObjectID(id)};
-    itemsCollection.remove(lookup, function(err, results){
-        res.send({status: 'Item cleared'});
-    });
-});
+// Setup the item routes
+router.route('/:id')
+      .delete(function (req, res, next) {
+          var id = req.params['id'];
+          var lookup = { _id: new mongodb.ObjectID(id) };
+          itemsCollection.remove(lookup, function (err, results) {
+              res.send({ status: 'Item cleared' });
+          });
+      });
 
-app.use(express.static(__dirname + '/public')).use('/todo', router);
+app.use(express.static(__dirname + '/public'))
+   .use('/todo', router);
