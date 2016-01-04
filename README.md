@@ -4,7 +4,7 @@
 
 **SETUP**
 
-1. `git clone https://github.com/SKEPT1K/toDoList.git`
+1. `git clone git@github.com:SKEPT1K/toDoList.git`
 2. Configure the mongo connection via the *MongoClient* string:
 
     ```Javascript
