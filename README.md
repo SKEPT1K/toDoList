@@ -7,9 +7,8 @@
 1. ```git clone https://github.com/SKEPT1K/toDoList.git```
 2. Configure the mongo connection via the *MongoClient* string:
 
-`mongodb.MongoClient.connect('mongodb://127.0.0.1:27017/test', function (err, database){`
+    `mongodb.MongoClient.connect('mongodb://127.0.0.1:27017/test', function (err, database)`
 
-    `...`
 
 3. Set the *collection* and *port* to be used:
 
